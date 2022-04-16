@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список дел</title>
+    <style>
+        h1 {
+            background: white	;
+            color: black;
+            padding: 1px;
+            text-align: center;
+        }
+        div{
+            background: gray;
+            color: #ffffff;
+            padding: 2px;
+            text-align: center;
+        }
+        ol{
+            background: beige;
+            color: black;
+            padding: 2px;
+            text-align: center;
+        }
+
+        /* Кнопка выпадающего списка */
+        .dropbtn {
+            background-color: #3498DB;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        /*кнопка показать выполенные*/
+        .showcomplite{
+            background-color: #3498DB;
+            color: white;
+            padding: 6px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        /*кнопка показать невыполенные*/
+        .showcnotomplite{
+            background-color: #3498DB;
+            color: white;
+            padding: 6px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        /*кнопка показать все*/
+        .showall{
+            background-color: #3498DB;
+            color: white;
+            padding: 6px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        /*кнопка добавить*/
+        .add{
+            background-color:green;
+            color: white;
+            padding: 6px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        .add:hover{
+            background: darkgreen;
+        }
+        /*кнопка выполнить*/
+        .complite{
+            background-color: darkviolet;
+            color: white;
+            padding: 6px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        .complite:hover{
+            background: darkmagenta;
+        }
+        /*кнопка отменить выполенные*/
+        .cancelcomplite{
+            background-color:red;
+            color: white;
+            padding: 6px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        .cancelcomplite:hover{
+            background: darkred;
+        }
+
+        /* Кнопка выпадающего меню при наведении и фокусировке */
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #2980B9;
+        }
+
+        /* Контейнер <div> - необходим для размещения выпадающего содержимого */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Выпадающее содержимое (скрыто по умолчанию) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        /* Ссылки внутри выпадающего списка */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Изменение цвета выпадающих ссылок при наведении курсора */
+        .dropdown-content button:hover {background-color: gray}
+
+        /* Показать выпадающее меню */
+        .show {display:block;}
+
+        .header-h1 {
+            position: relative;
+            margin-bottom: .5rem;
+            text-align: center;
+        }
+        .header-h1 h1 {
+            display: inline-block;
+            background: #fff;
+            margin-bottom: 0;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            padding: .5rem 1.5rem;
+            border: .125rem solid #6a1b9a;
+            color: #6a1b9a;
+        }
+        input[type=text] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 3px solid #ccc;
+            -webkit-transition: 0.5s;
+            transition: 0.5s;
+            outline: none;
+        }
+
+        input[type=text]:focus {
+            border: 3px solid red;
+        }
+        .list {
+            margin: 0;
+            counter-reset: li;
+            list-style: none;
+            background:#E8E8E8;
+            padding: 10px;
+        }
+        .list li {
+            position: relative;
+            margin: 0 0 10px 2em;
+            padding: 4px 8px;
+            border-top: 2px solid #787A77;
+            transition: .3s linear;
+        }
+        .list li:last-child {margin-bottom: 0;}
+        .list li:before {
+            content: counter(li);
+            counter-increment: li;
+            position: absolute;
+            top: -2px;
+            left: -2em;
+            width: 2em;
+            box-sizing: border-box;
+            margin-right: 8px;
+            padding: 4px;
+            border-top: 2px solid #787A77;
+            border-left: 2px solid transparent;
+            border-right: 2px solid transparent;
+            border-bottom: 2px solid transparent;
+            background: #787A77;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            transition: .3s linear;
+        }
+        .list li:hover {border-top: 2px solid #389F70;}
+        .list li:hover:before {
+            border: 2px solid #389F70;
+            background: #98EABA;
+        }
+    </style>
+</head>
+
+<div><div class="header-h1">
+    <h1>Список дел</h1>
+</div>
+    <input type="text" id="text" placeholder="Новое дело">
+    <button type="button" id="addbutton" class = "add" onclick="add()">Добавить</button>
+    <button type="button" id="completetask" class = "complite" onclick="complete();checklenght();checkbox()">Выполнить</button>
+    <button type="button" id="cantcompletetask" class = "cancelcomplite" onclick="canceltcomplete();checklenght();checkbox()">Отменить выполненные</button>
+
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Фильтр</button>
+        <div id="myDropdown" class="dropdown-content">
+            <button type="button" class="showcomplite" onclick="showcomplite();checklenght()">Показать выполненные</button>
+            <button type="button" class="showcnotomplite" onclick="shownotcomplite();checklenght()">Показать невыполненные</button>
+            <button type="button" class="showall" onclick="showall();checklenght()">Показать все</button>
+        </div>
+    </div>
+
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+        // Закрывет выпадающее меню, если пользователь щелкает за его пределами
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                let dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    let openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function add(){
+            //alert(document.getElementById('list').childNodes.length);
+            const id = Math.random().toString(36).substring(2);
+            const input = document.getElementById('text');
+            const list = document.getElementById('list');
+            const newvalue = document.createElement('li');
+            newvalue.id = id;
+            newvalue.innerHTML = `<input type="checkbox">${input.value}<button onclick="del('${id}')">X</button>`;
+            list.appendChild(newvalue);
+            //alert("Список дел обновлён!" + input.value);
+        }
+        function del(id){
+            const element = document.getElementById(id);
+            element.parentElement.removeChild(element);
+        }
+
+        // function deletechkbox(){
+        //     let checkboxes = document.querySelectorAll('input[type=checkbox]')
+        //     for (let i = 0; i < checkboxes.length; i ++)
+        //     {
+        //         if (checkboxes[i].checked === true)
+        //         {
+        //             checkboxes[i].parentElement.parentElement.removeChild(checkboxes[i].parentElement);
+        //         }
+        //     }
+        // }
+
+        function complete(){
+            let checkboxes = document.querySelectorAll('input[type = checkbox]')
+            for (let i = 0; i < checkboxes.length; i++){
+                if (checkboxes[i].checked === true){
+                    checkboxes[i].parentElement.style.textDecoration = "line-through";
+                    checkboxes[i].disabled = true;
+                }
+            }
+        }
+
+        function canceltcomplete(){
+            let checkboxes = document.querySelectorAll('input[type = checkbox]')
+            for (let i = 0; i < checkboxes.length; i++){
+                if (checkboxes[i].checked === true){
+                    checkboxes[i].parentElement.style.textDecoration = "";
+                    checkboxes[i].disabled = false;
+                }
+            }
+        }
+
+        function showcomplite(){
+            let checkbox = document.querySelectorAll('input[type = checkbox]')
+            for (let i = 0; i < checkbox.length; i++){
+                if (checkbox[i].checked === false){
+                    checkbox[i].parentElement.style.visibility = 'hidden';
+                }
+                if (checkbox[i].checked === true){
+                    checkbox[i].parentElement.style.visibility = 'visible';
+                }
+            }
+        }
+
+        function shownotcomplite(){
+            let checkbox = document.querySelectorAll('input[type = checkbox]')
+            for (let i = 0; i < checkbox.length; i++){
+                if (checkbox[i].checked === true){
+                    checkbox[i].parentElement.style.visibility = 'hidden';
+                }
+                if (checkbox[i].checked === false){
+                    checkbox[i].parentElement.style.visibility = 'visible';
+                }
+            }
+        }
+
+        function showall(){
+            let checkbox = document.querySelectorAll('input[type = checkbox]')
+            for (let i = 0; i < checkbox.length; i++){
+                if (checkbox[i].checked === true){
+                    checkbox[i].parentElement.style.visibility = 'visible';
+                }
+                if (checkbox[i].checked === false){
+                    checkbox[i].parentElement.style.visibility = 'visible';
+                }
+            }
+        }
+        function checklenght(){
+            let checkbox = document.querySelectorAll('input[type = checkbox]')
+            if (checkbox.length === 0) {
+                alert('Сначала нужно заполнить список дел');
+            }
+
+        }
+        function checkbox(){
+            let checkbox = document.querySelectorAll('input[type = checkbox]')
+            for (let i = 0; i < checkbox.length; i++){
+                if (checkbox[i].checked === true){
+                    break
+                }else{
+                    alert('Сначала нужно выбрать один или несколь пунктов')
+                    break
+                }
+            }
+        }
+    </script>
+    <ol id="list" class="list">
+    </ol>
+</div>
+</html>
